@@ -75,6 +75,6 @@ public class FrontControllerServletV5 extends HttpServlet {
                 return adapter;
             }
         }
-        throw new IllegalStateException("handler adapter를 찾을 수 없습니다.");
+        throw new IllegalStateException("handler adapter를 찾을 수 없습니다. handler=" + handler);
     }
 }
