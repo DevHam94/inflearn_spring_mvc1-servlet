@@ -50,9 +50,8 @@ public class FrontControllerServletV5 extends HttpServlet {
             return;
         }
 
-        for (MyHandlerAdapter handlerAdapter : handlerAdapters) {
-
-        }
+        MyHandlerAdapter a;
+        getHandlerAdapter(handler);
 
         Map<String, String> paramMap = createParamMap(request);
         ModelView mv = controller.process(paramMap);
@@ -66,5 +65,16 @@ public class FrontControllerServletV5 extends HttpServlet {
     private Object getHandler(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         return handlerMappingMap.get(requestURI);
+    }
+
+
+    private MyHandlerAdapter getHandlerAdapter(Object handler) {
+        MyHandlerAdapter a;
+        for (MyHandlerAdapter adapter : handlerAdapters) {
+            if (adapter.supports(handler)) {
+                return adapter;
+            }
+        }
+        throw new IllegalStateException("handler adapter를 찾을 수 없습니다.");
     }
 }
