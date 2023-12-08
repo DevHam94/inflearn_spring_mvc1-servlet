@@ -50,11 +50,9 @@ public class FrontControllerServletV5 extends HttpServlet {
             return;
         }
 
-        MyHandlerAdapter a;
-        getHandlerAdapter(handler);
-
-        Map<String, String> paramMap = createParamMap(request);
-        ModelView mv = controller.process(paramMap);
+        MyHandlerAdapter adapter = getHandlerAdapter(handler);
+        
+        ModelView mv = adapter.handle(request, response, handler);
 
         String viewName = mv.getViewName();//논리이름 new-form
         MyView view = viewResolver(viewName);
@@ -76,5 +74,9 @@ public class FrontControllerServletV5 extends HttpServlet {
             }
         }
         throw new IllegalStateException("handler adapter를 찾을 수 없습니다. handler=" + handler);
+    }
+
+    private static MyView viewResolver(String viewName) {
+        return new MyView("/WEB-INF/views/" + viewName + ".jsp");
     }
 }
